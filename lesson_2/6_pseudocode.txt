@@ -1,0 +1,90 @@
+Write out pseudocode (both casual and formal) that does the following:
+-------------------------------------------------------------------------------
+
+1) a function that returns the sum of two numbers:
+
+Casual pseudocode: -----------------------------------
+Given two numbers. If number1 or 2 is undefined, return undefined. 
+If not undefined, proceed.
+Add number one and number two together. Assign it to a total sum number.
+Return the total sum number. 
+
+Formal pseudocode: -----------------------------------
+START
+
+# Given two number called number1 and number2
+
+SET sum = 0
+
+IF (number1 || number2) === undefined
+  return undefined
+Else
+  return sum = number1 + number2
+
+END
+
+-------------------------------------------------------------------------------
+
+2) a function that takes an array of strings, 
+  and returns a string that is all those strings concatenated together
+
+Casual pseudocode: -----------------------------------
+Check if array of strings is an array, and contains strings. If so, then turn 
+the array into a string, with all the elements individually added together,
+with a space in between. Return the new string. 
+
+Formal pseudocode: -----------------------------------
+START
+
+# function is given an element called array
+
+If array !== array 
+  PRINT not an array 
+Else IF array's elements aren't all strings
+  PRINT array's elements need to be all strings
+Else 
+  return a new string from the turning of the array into a string with a 
+  single space in between.
+
+END
+
+-------------------------------------------------------------------------------
+
+3) a function that takes an array of integers, and returns a new array 
+with every other element
+
+Casual pseudocode: ----------------------------------
+Check if the function's element takes an array, and is all integers. If not, 
+prompt the user. If so, proceed. 
+
+Set a new array called array 2. Move the first 
+element of array 1 into array 2. 
+
+Iterate through the array one by one:
+-If the element's index number is odd, then skip to the next elmeent. 
+-If the element is even, then move into array 2.
+
+After iterating through the entire array, return array 2.
+
+Formal pseudocode: ------------------------------------
+START
+
+# Given an array with integers called array1
+
+IF array1 !== an array  
+  PRINT ask user for an array
+ELSE IF array1 doesn't contain all integers  
+  PRINT ask users for an array with all integers
+ELSE  
+  SET array2
+  Move array1's element at index 0 into array2
+  SET index = 1
+  WHILE index < array2's length - 1
+    IF index is odd 
+      skip to the next iteration 
+    Else index is even 
+      move array1's element at the current index to array2
+
+Return array2
+
+

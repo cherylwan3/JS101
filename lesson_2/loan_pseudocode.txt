@@ -1,0 +1,63 @@
+/**
+ * casual pseudocode: 
+ * 
+ * Welcome user to the calculator.
+ * 
+ * -Prompt user for the loan amount and save that value.
+ * -Prompt user for the Annual Percentage Rate (APR) and save that value. 
+ * -Divide the APR by twelve and save that value as the monthly interest rate. 
+ * -Prompt the user for the loan duration in years and save that value. 
+ * -Multiply the loan duration in years by twelve and save that value as the 
+ * loan duration in months.
+ * 
+ * Then enter all the saved values into the mortgage rate formula to 
+ * calculate the monthly payment.
+ * 
+ * Convert the monthly payment into dollars and cents amount and log 
+ * that to the console.
+ * 
+ * 
+ * Formal Pseudocode:
+ * START
+ * 
+ * GET loanAmount
+ * SET loanAmount
+ *
+ * // check for positive integer 
+ * WHILE invalidInteger
+ *  GET loanAmount
+ * 
+ * // check for positive integer 
+ * Get annualPercentageRate // account for 0
+ * SET annualPercentageRate
+ * 
+ * WHILE invalidAnnualPercentageRate
+ *  GET annualPercentageRate
+ * 
+ * SET monthlyInterestRate
+ * monthlyInterestRate = annualPercentageRate / 12 
+ *
+ * GET loanDurationInYears
+ * SET loanDurationInYears
+ * 
+ * WHILE invalidLoanDurationInYears
+ *  GET loanDurationInYears
+ * 
+ * 
+ * SET loanDurationInMonths
+ * loanDurationInMonths = loanDurationInYears * 12 
+ * 
+ * SET monthlyPayment;
+ * 
+ * IF annualPercentageRate  === 0 
+ *  monthlyPayment = loanAmount / loanDurationInMonths
+ * ELSE
+  * monthlyPayment = loanAmount * 
+  * (monthlyInterestRate / (1 - Math.pow((1 + monthlyInterestRate), 
+  * (-loanDurationInMonths))));
+ * 
+ * SET monthlyPaymentInDollars
+ *
+ * PRINT monthlyPaymentInDollars
+ * PRINT another calculation?
+ */

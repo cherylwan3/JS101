@@ -13,6 +13,7 @@ function invalidNumber(numberString) {
 prompt('Welcome to the loan calculator.');
 
 while (true) {
+  prompt('-------------------------------------------');
   prompt('Please enter your loan amount.');
   let loanAmount = readline.question();
 
@@ -48,8 +49,8 @@ while (true) {
     monthlyPayment = loanAmount / loanDurationInMonths;
   } else {
     monthlyPayment = loanAmount *
-                (monthlyInterestRate /
-                (1 - Math.pow((1 + monthlyInterestRate), (-loanDurationInMonths))));
+          (monthlyInterestRate /
+          (1 - Math.pow((1 + monthlyInterestRate), (-loanDurationInMonths))));
   }
 
   prompt(`Your total monthly payment is: $${monthlyPayment.toFixed(2)}.`);

@@ -5,18 +5,9 @@ function prompt(message) {
 }
 
 function invalidNumber(numberString) {
-  return numberString.trim() <= 0 || '' || Number.isNaN(Number(numberString)); 
-}
-
-function invalidPercentage(numberString) {
-  return ((numberString.trim() === '' || Number.isNaN(Number(numberString)))) || 
-    numberString.trim() > 0.99 ||
-    numberString.trim() < 0;
-}
-
-function numberInDollars(monthlyPayment) {
-  monthlyPayment = monthlyPayment.toFixed(2);
-  return `\$${monthlyPayment}`;
+  return numberString.trim() === '' ||
+        Number(numberString) < 0    ||
+        Number.isNaN(Number(numberString));
 }
 
 prompt('Welcome to the loan calculator.');
@@ -26,67 +17,49 @@ while (true) {
   let loanAmount = readline.question();
 
   while (invalidNumber(loanAmount)) {
-    prompt('Please enter a valid loan amount. (Numbers only)');
+    prompt('Please enter a positive number.');
     loanAmount = readline.question();
-  } 
+  }
 
-  loanAmount = Number(loanAmount);
-
-  prompt('Please enter your annual percentage rate.\nEnter it in percentage format. Example: for 5%, enter it as 0.05');
+  prompt('Please enter your annual percentage rate.\nExample: for 5%, enter it as 5.');
   let annualPercentageRate = readline.question();
 
-  while (invalidPercentage(annualPercentageRate)) {
-    prompt('Please enter a valid annual percentage rate.\nEnter it in percentage format. Example: for 5%, enter it as 0.05');
+  while (invalidNumber(annualPercentageRate)) {
+    prompt('Please enter a positive number');
     annualPercentageRate = readline.question();
-  } 
-
-  annualPercentageRate = Number(annualPercentageRate);
-
-  let monthlyInterestRate = annualPercentageRate / 12; 
+  }
 
   prompt('Please enter your loan duration in years.');
   let loanDurationInYears = readline.question();
 
   while (invalidNumber(loanDurationInYears)) {
-    prompt('Please enter a valid loan duration in years. (Numbers only)');
+    prompt('Please enter a positive number');
     loanDurationInYears = readline.question();
   }
 
+  loanAmount = Number(loanAmount);
+  annualPercentageRate = Number(annualPercentageRate) / 100;
+  let monthlyInterestRate = annualPercentageRate / 12;
   loanDurationInYears = Number(loanDurationInYears);
-
-  let loanDurationInMonths = loanDurationInYears * 12; 
+  let loanDurationInMonths = loanDurationInYears * 12;
 
   let monthlyPayment;
-
   if (annualPercentageRate === 0) {
-      monthlyPayment = loanAmount / loanDurationInMonths;
+    monthlyPayment = loanAmount / loanDurationInMonths;
   } else {
-    monthlyPayment = loanAmount * 
-      (monthlyInterestRate / (1 - Math.pow((1 + monthlyInterestRate), 
-      (-loanDurationInMonths))));
-  };
-
-  let monthlyPaymentInDollarsString = numberInDollars(monthlyPayment);
-
-  prompt(`Your total monthly payment is ${monthlyPaymentInDollarsString}.`);
-
-  prompt('Would you like to make a new calculation? Press y or n');
-  let answer = readline.question();
-
-  answer = answer.trim().toLowerCase();
-
-  while (answer !== 'y' && answer !== 'n') {
-    prompt('Please enter either y or n.');
-    answer = readline.question(); 
-    answer = answer.trim().toLowerCase();
+    monthlyPayment = loanAmount *
+                (monthlyInterestRate /
+                (1 - Math.pow((1 + monthlyInterestRate), (-loanDurationInMonths))));
   }
 
-  if (answer === 'n') break;
+  prompt(`Your total monthly payment is: $${monthlyPayment.toFixed(2)}.`);
+
+  prompt('Would you like to make a new calculation? Press "y" or "n".');
+  let answer = readline.question();
+  while (answer[0] !== 'y' && answer[0] !== 'n') {
+    prompt('Please enter "y" or "n".');
+    answer = readline.question().toLowerCase();
+  }
+
+  if (answer[0] === 'n') break;
 }
-
-
-
-
-
-
-

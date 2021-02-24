@@ -4,16 +4,14 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
-function invalidNumZeroOrGreater(numberString) {
+function invalidNum(numberString) {
   return numberString.trim() === '' ||
         Number(numberString) < 0    ||
         Number.isNaN(Number(numberString));
 }
 
-function invalidNumLessThanZero(numberString) {
-  return numberString.trim() === '' ||
-        Number(numberString) <= 0    ||
-        Number.isNaN(Number(numberString));
+function invalidNumNoZero(numberString) {
+  return (invalidNum(numberString)) || (Number(numberString) === 0);
 }
 
 prompt('Welcome to the loan calculator.');
@@ -23,7 +21,7 @@ while (true) {
   prompt('Please enter your loan amount.');
   let loanAmount = readline.question();
 
-  while (invalidNumLessThanZero(loanAmount)) {
+  while (invalidNumNoZero(loanAmount)) {
     prompt('Please enter a number greater than 0.');
     loanAmount = readline.question();
   }
@@ -31,7 +29,7 @@ while (true) {
   prompt('Please enter your annual percentage rate.\nExample: for 5%, enter it as 5.');
   let annualPercentageRate = readline.question();
 
-  while (invalidNumZeroOrGreater(annualPercentageRate)) {
+  while (invalidNum(annualPercentageRate)) {
     prompt('Please enter a positive number');
     annualPercentageRate = readline.question();
   }
@@ -39,7 +37,7 @@ while (true) {
   prompt('Please enter your loan duration in years.');
   let loanDurationInYears = readline.question();
 
-  while (invalidNumLessThanZero(loanDurationInYears)) {
+  while (invalidNumNoZero(loanDurationInYears)) {
     prompt('Please enter a number greater than 0.');
     loanDurationInYears = readline.question();
   }

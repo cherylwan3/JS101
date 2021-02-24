@@ -4,9 +4,15 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
-function invalidNumber(numberString) {
+function invalidNumZeroOrGreater(numberString) {
   return numberString.trim() === '' ||
         Number(numberString) < 0    ||
+        Number.isNaN(Number(numberString));
+}
+
+function invalidNumLessThanZero(numberString) {
+  return numberString.trim() === '' ||
+        Number(numberString) <= 0    ||
         Number.isNaN(Number(numberString));
 }
 
@@ -17,15 +23,15 @@ while (true) {
   prompt('Please enter your loan amount.');
   let loanAmount = readline.question();
 
-  while (invalidNumber(loanAmount)) {
-    prompt('Please enter a positive number.');
+  while (invalidNumLessThanZero(loanAmount)) {
+    prompt('Please enter a number greater than 0.');
     loanAmount = readline.question();
   }
 
   prompt('Please enter your annual percentage rate.\nExample: for 5%, enter it as 5.');
   let annualPercentageRate = readline.question();
 
-  while (invalidNumber(annualPercentageRate)) {
+  while (invalidNumZeroOrGreater(annualPercentageRate)) {
     prompt('Please enter a positive number');
     annualPercentageRate = readline.question();
   }
@@ -33,8 +39,8 @@ while (true) {
   prompt('Please enter your loan duration in years.');
   let loanDurationInYears = readline.question();
 
-  while (invalidNumber(loanDurationInYears)) {
-    prompt('Please enter a positive number');
+  while (invalidNumLessThanZero(loanDurationInYears)) {
+    prompt('Please enter a number greater than 0.');
     loanDurationInYears = readline.question();
   }
 
@@ -56,7 +62,7 @@ while (true) {
   prompt(`Your total monthly payment is: $${monthlyPayment.toFixed(2)}.`);
 
   prompt('Would you like to make a new calculation? Press "y" or "n".');
-  let answer = readline.question();
+  let answer = readline.question().toLowerCase();
   while (answer[0] !== 'y' && answer[0] !== 'n') {
     prompt('Please enter "y" or "n".');
     answer = readline.question().toLowerCase();

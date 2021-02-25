@@ -11,7 +11,7 @@ function invalidNum(numberString) {
 }
 
 function invalidNumNoZero(numberString) {
-  return (invalidNum(numberString)) || (Number(numberString) === 0);
+  return invalidNum(numberString) || Number(numberString) === 0;
 }
 
 prompt('Welcome to the loan calculator.');

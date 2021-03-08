@@ -4,14 +4,13 @@ const ONE_ROUND = 1;
 const NO_WINS = 0;
 const MAX_WINS = 5;
 
-const LETTER_CHOICES = ['r', 'p', 's'];
-const VALID_CHOICES = ['rock', 'paper', 'scissors'];
-
 const WORD_CHOICES = {
   r: 'rock',
   p: 'paper',
   s: 'scissors',
 };
+const LETTER_CHOICES = Object.keys(WORD_CHOICES);
+const VALID_CHOICES = Object.values(WORD_CHOICES);
 
 const WINNING_COMBOS = {
   rock:     ['scissors'],
@@ -19,17 +18,17 @@ const WINNING_COMBOS = {
   scissors: ['paper'],
 };
 
-let currentRound = NO_WINS;
-let numOfHumanWins = NO_WINS;
-let numOfComputerWins = NO_WINS;
-
 function prompt(message) {
   console.log(`=> ${message}`);
 }
 
-function playerWins(playerA, playerB) {
-  return WINNING_COMBOS[playerA].includes(playerB);
+function playerWins(player, opponent) {
+  return WINNING_COMBOS[player].includes(opponent);
 }
+
+let currentRound = NO_WINS;
+let numOfHumanWins = NO_WINS;
+let numOfComputerWins = NO_WINS;
 
 function displayGrandWinner(numOfHumanWins, numOfComputerWins) {
   if (numOfHumanWins > numOfComputerWins) {
@@ -50,9 +49,9 @@ function displayRoundWinner(humanChoice, computerChoice) {
 }
 
 function addScore(humanChoice, computerChoice) {
-  if (playerWins(humanChoice, computerChoice) === true) {
+  if (playerWins(humanChoice, computerChoice)) {
     numOfHumanWins += ONE_ROUND;
-  } else if (playerWins(computerChoice, humanChoice) === true) {
+  } else if (playerWins(computerChoice, humanChoice)) {
     numOfComputerWins += ONE_ROUND;
   }
 }
@@ -61,10 +60,6 @@ prompt('Welcome to the rock paper scissors game!');
 prompt('Win 5 rounds first to become the grand winner.');
 
 while (true) {
-  currentRound = NO_WINS;
-  numOfHumanWins = NO_WINS;
-  numOfComputerWins = NO_WINS;
-
   while (true) {
     console.log(`----------Round: ${currentRound + ONE_ROUND}----------------------------------------`);
     console.log(`=> Current Win Rate - Your wins: ${numOfHumanWins} / Computer wins: ${numOfComputerWins}`);
@@ -75,7 +70,7 @@ while (true) {
 
     while (!LETTER_CHOICES.includes(humanChoiceInLetter)) {
       prompt("That's not a valid choice.");
-      humanChoiceInLetter = readline.question();
+      humanChoiceInLetter = readline.question().toLowerCase()[0];
     }
 
     let humanChoice = WORD_CHOICES[humanChoiceInLetter];
@@ -93,17 +88,22 @@ while (true) {
     } else {
       console.log(`=> Current Win Rate - Your wins: ${numOfHumanWins} / Computer wins: ${numOfComputerWins}`);
       displayGrandWinner(numOfHumanWins, numOfComputerWins);
+      currentRound = NO_WINS;
+      numOfHumanWins = NO_WINS;
+      numOfComputerWins = NO_WINS;
       break;
     }
   }
-
-  let answer;
   prompt('Do you want to play again? y or n');
-  answer = readline.question().toLowerCase();
+  let answer = readline.question().toLowerCase();
 
   while (answer[0] !== 'y' && answer[0] !== 'n') {
     prompt('Please enter "y" or "n".');
     answer = readline.question().toLowerCase();
   }
+
+  if (answer[0] === 'y') {
+    console.log('**********************************************************************\n\n');
+  };
   if (answer[0] === 'n') break;
 }

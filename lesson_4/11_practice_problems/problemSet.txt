@@ -1,0 +1,58 @@
+1) 
+
+[1, 2, 3].filter(num => 'hi');
+-returns [1,2,3] 
+-because the return statement of the callback is a truthy value
+
+2) 
+
+[1, 2, 3].map(num => {
+  num * num;
+});
+- returns [undefined, undefined, undefined]
+- because no explicit return statement
+
+3) 
+
+[1, 2, 3].map(num => num * num);
+-returns [1, 4, 9] 
+-bc no return statement needed arrow function statement with one statement
+
+4) 
+
+['ant', 'bear', 'caterpillar'].pop().length
+
+-returns 11 
+-pop returns the removed element. length called on the removed element is 11. 
+
+5)
+
+[1, 2, 3].every(num => {
+  return num = num * 2;
+});
+
+-callback returns 2, 4, 6
+- every returns 'true'
+
+6)
+
+let arr = [1, 2, 3, 4, 5]
+arr.fill(1, 1, 5);
+
+- yes 
+
+7) 
+
+['ant', 'bear'].map(elem => {
+  if (elem.length > 3) {
+    return elem;
+  }
+});
+
+- map returns a new array: [undefined, 'bear']
+
+8) 
+
+let flintstones = ["Fred", "Barney", "Wilma", "Betty", "Pebbles", "Bambam"];
+
+{ Fred: 0, Barney: 1, Wilma: 2, Betty: 3, Pebbles: 4, Bambam: 5 }

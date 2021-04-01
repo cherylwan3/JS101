@@ -51,8 +51,3 @@ arr.fill(1, 1, 5);
 
 - map returns a new array: [undefined, 'bear']
 
-8) 
-
-let flintstones = ["Fred", "Barney", "Wilma", "Betty", "Pebbles", "Bambam"];
-
-{ Fred: 0, Barney: 1, Wilma: 2, Betty: 3, Pebbles: 4, Bambam: 5 }

@@ -1,0 +1,32 @@
+Action: method call (map)
+Performed on: [[1, 2], [3, 4]]
+side effect? none
+return value: new transformed array
+is return value used? no
+
+Action:  map callback execution 
+Performed on: each subarray
+side effect? none
+return value: new transformed subarray
+is return value used? Yes, for top level map transformation
+
+Action: inner method call (map)
+Performed on: each subarray
+side effect?:  none
+return value: new transformed subarray 
+is return value used?: yes returned by outer callback
+
+Action: inner method call execution
+Performed on:  a number
+side effect? none
+return value: a number
+is return value used? yes used by inner map transformation
+
+Action: num * 2
+Performed on: value of num parameter
+side effect? none
+return value: a number
+is return value used? yes returned by inner callback
+
+Return value will be:[[2, 4], [6, 8]]
+

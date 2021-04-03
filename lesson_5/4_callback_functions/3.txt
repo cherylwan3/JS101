@@ -1,0 +1,23 @@
+Action: method call (map) 
+Performed on: outer array
+side effect? none
+return value: new array: [1, 3]
+is return value used? no , but shown
+
+Action: callback execution
+Performed on: each subarray
+side effect?:  none
+return value: index 0 of subarray
+is return value used?: yes, used by ‘map’ for transformation
+
+Action: access element [0]
+Performed on: each subarray
+side effect? none
+return value element 0 of each subarray
+is return value used? yes, used by console.log() 
+
+Action: method call (console.log)
+Performed on: element 0 of each subarray
+side effect?: outputs a string representation of an integer
+return value: undefined
+is return value used?: no

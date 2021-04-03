@@ -1,0 +1,53 @@
+Action: outer method call (filter)
+Performed on: [{ a: 'ant', b: 'elephant' }, { c: 'cat', d: 'dog' }]
+side effect? none
+return value: new filtered array
+is return value used? no
+
+Action: outer method execution (filter)
+Performed on: objects in outer array
+side effect? none
+return value: objects to add to new array
+is return value used? no
+
+Action:  method call (Object.keys)
+Performed on: [{ a: 'ant', b: 'elephant' }, { c: 'cat', d: 'dog' }]
+side effect? none
+return value: array of keys 
+is return value used? yes, a method is called on it
+
+Action: method call (every)
+Performed on: Object.keys(object)
+side effect?:  none
+return value: boolean value 
+is return value used?: returned by filter() callback 
+
+Action: method call execution (every)
+Performed on:  an array of keys 
+side effect? none
+return value: boolean 
+is return value used? yes by every method
+
+Action: object[key]
+Performed on: objects of outer array
+side effect? none
+return value: a string  
+is return value used?: Yes by by object[key][0]
+
+Action: object[key][0]
+Performed on: object[key], a string that reprents the key
+side effect? none
+return value: the value of the object, a string
+is return value used? yes
+
+Action: object[key][0] === key
+Performed on: a string that represents the key
+side effect? none
+return value: boolean
+is return value used? yes by every callback
+
+
+
+
+
+

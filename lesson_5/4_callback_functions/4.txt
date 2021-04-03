@@ -1,0 +1,35 @@
+Action: variable initlization
+Performed on: n/a
+side effect? none
+return value: undefined
+is return value used? no
+
+Action: method call (forEach) 
+Performed on: [[18, 7], [3, 12]]
+side effect? none
+return value: undefined
+is return value used? Yes, used to assign to myArr
+
+Action: forEach callback execution
+Performed on: each subarray
+side effect?:  none
+return value: [undefined, undefined]
+is return value used?: no
+
+Action: method call (map) 
+Performed on: each subarray
+side effect? none
+return value: [undefined, undefined]
+is return value used? yes returned by the forEach callback
+
+Action: map callback execution 
+Performed on: each subarray's elements
+side effect?: none
+return value: undefined 
+is return value used?: yes; used by map for transformation
+
+Action: console.log()
+Performed on: element of subarray 
+side effect?: outputs a string representation of an integer
+return value: undefined
+is return value used?: yes used to determine return value of inner callback

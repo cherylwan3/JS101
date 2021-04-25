@@ -25,10 +25,9 @@ console.log(returnUUID());
  */
 
 
-// function returnUUID() {
+function returnUUID() {
   let charArr = ['a', 'b', 'c', 'd', 'e', 'f', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   let sections = [8, 4, 4, 4, 12];
-  debugger;
    
   let uuid = '';  
   sections.forEach((num, sectionIndex) => { 
@@ -43,5 +42,5 @@ console.log(returnUUID());
   });
 
   return uuid;
-//}
-// console.log(returnUUID()); 
+}
+console.log(returnUUID()); 

@@ -17,7 +17,6 @@ function integerToString(number) {
   do {
     let remainder = number % 10;
     number = Math.floor(number / 10);
-    console.log(numString);
     numString = DIGITS[remainder] + numString;
   } while (number > 0);
   

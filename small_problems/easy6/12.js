@@ -8,16 +8,7 @@
  * D/A------------------------
  * - declare func
  * - split the string into an array by ''
- * - 
  * - filter @stringArray to another @parenArr containing only '(' and ')'
- * - filter @parenArr so it contains only '(' -> @openArr
- * - filter @parenArr so it contains only ')' -> @closeArr
- * -  IF @parenArr doens't end with '(' && @openArr and @closeArr 's lenghs are equal, 
- *        - return true
- * - ELSE
- *    return false
- *    
- *    
 */
 
 // shorter method
@@ -59,5 +50,5 @@ console.log(isBalanced("((What)) (is this))?") === false);
 console.log(isBalanced("Hey!") === true);
 console.log(isBalanced(")Hey!(") === false);
 console.log(isBalanced("What ((is))) up(") === false);
-//  snode ()) (()
+
 

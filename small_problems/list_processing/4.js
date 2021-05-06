@@ -44,10 +44,7 @@ function leadingSubstrings2(str) {
   return result;
 }
 
-// using map
+// using map, shortest solution
 function leadingSubstrings(str) {
-  let result = [...str].map((_, idx) => str.slice(0, idx + 1));
-
-  //console.log(result);
-  return result;
+  return [...str].map((_, idx) => str.slice(0, idx + 1));
 }

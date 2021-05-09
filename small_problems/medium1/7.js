@@ -55,7 +55,7 @@ function fibonacci(nth) {
   if (nth === 1 || nth === 2) return 1;
   else {
     for (let currentNth = 3; currentNth <= nth; currentNth += 1) {
-      nums[currentNth] = nums[currentNth- 1] + nums[currentNth - 2];
+      nums[currentNth] = nums[currentNth - 1] + nums[currentNth - 2];
     }
     return nums[nums.length - 1];
   }

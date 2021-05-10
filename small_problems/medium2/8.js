@@ -25,7 +25,7 @@
  * A-----------------
  * - function longText (str)
  * - declare @longSent, @wordCount = 0
- * - start loop: iterate over every @str from @idx 0 to str.length
+ * - start loop: iterate over every @str's char from @idx 0 to str.length
  *  - if @sentenceEnd includes @char 
  *    - set @currentSentence to :slice a portion of the str from 0 to @idx + 1 
  *    - set @currentWordCount to calling @getWordCount on @currentSentence
@@ -45,8 +45,58 @@
  * - end function
 */
 
+// my original solution
+function longestSentence1(str) {
+  const END_PUNCTUATION = ['.', '!', '?']; 
+  let longSentence; 
+  let wordCount = 0;
+  let previousIdx = 0;
+
+  [...str].forEach((char, idx) => {
+    if (END_PUNCTUATION.includes(char)) {
+      let currentSentence = str.slice(previousIdx, idx + 1);
+      let currentWordCount = currentSentence.split(' ').length;
+      
+      if (currentWordCount > wordCount) {
+        wordCount = currentWordCount;
+        longSentence = currentSentence;
+      } 
+
+      previousIdx = idx + 2;
+    }
+  })
+  console.log(longest.sentence + '\n');
+  console.log(`The longest sentence has ${longest.wordCount} words. \n`); 
+}
+
+// longer way: using reduce 
 function longestSentence(str) {
-  iter
+  const END_PUNCTUATION = ['.', '!', '?']; 
+
+  let longest = [...str].reduce(
+    function(longest, char, endIdx) {
+      if (END_PUNCTUATION.includes(char)) {
+        let currentSentence = str.slice(longest.startIdx, endIdx + 1);
+        let currentWordCount = currentSentence.split(' ').length;
+        
+        if (currentWordCount > longest.wordCount) {
+          return { 
+            startIdx: endIdx + 2, 
+            sentence: currentSentence, 
+            wordCount: currentWordCount
+          } 
+        } else {
+          longest.startIdx = endIdx + 2;
+          return longest;
+        }
+      }
+
+      return longest;
+    }, 
+    { startIdx: 0, sentence: '', wordCount: 0 }
+  );
+  console.log(longest.sentence + '\n');
+  console.log(`The longest sentence has ${longest.wordCount} words. \n`); 
 }
 
 // E: test cases
@@ -77,7 +127,7 @@ let longerText = longText +
   'and that government of the people, by the people, for the people, ' +
   'shall not perish from the earth.';
 
-/* longestSentence(longText);
+longestSentence(longText);
 // Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal.
 //
 // The longest sentence has 30 words.
@@ -85,15 +135,39 @@ let longerText = longText +
 longestSentence(longerText);
 // It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.
 //
-// The longest sentence has 86 words. */
+// The longest sentence has 86 words.
 
-/* longestSentence("Where do you think you're going? What's up, Doc?");
+longestSentence("Where do you think you're going? What's up, Doc?");
 // Where do you think you're going?
 //
-// The longest sentence has 6 words. */
+// The longest sentence has 6 words.
 
 longestSentence("To be or not to be! Is that the question?");
 // To be or not to be!
 //
 // The longest sentence has 6 words.
 
+
+
+/* //test
+function longestSentence1(str) {
+  const END_PUNCTUATION = ['.', '!', '?']; 
+
+  let obj = [...str].reduce(
+    function(obj, char, endIdx) {
+      if (END_PUNCTUATION.includes(char)) {
+        let currentSentence = str.slice(obj.startIdx, endIdx + 1);
+
+        return { startIdx: endIdx + 2, sentence: currentSentence }       
+      } else {
+        return obj;
+      }
+    }, 
+    { startIdx: 0, sentence: '' }
+  );
+
+  console.log(obj.sentence);
+  console.log(obj.startIdx);
+} 
+
+//longestSentence('Cat! Hi.'); */

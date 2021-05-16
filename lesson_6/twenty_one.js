@@ -97,8 +97,8 @@ function cardValues(cards) {
 
 function sumCards(cards) {
   let values = cardValues(cards);
-
   let numOfA = 0;
+
   let sum = values.reduce((sum, value) => {
     switch (value) {
       case 'J':
@@ -126,8 +126,9 @@ function busted(cards) {
   return sumCards(cards) > 21;
 }
 
-function valueToName(cardValues) {
-  return cardValues.map(value => {
+function getCardNames(cards) {
+  let values = cardValues(cards);
+  return values.map(value => {
     switch (value) {
       case 'J':
         return 'Jack';
@@ -154,11 +155,8 @@ function joinCards(cardNames) {
 }
 
 function displayPlayerCards(playerCards, dealerCards) {
-  let playerValues = cardValues(playerCards);
-  let playerCardNames = valueToName(playerValues);
-  
-  let dealerValues = cardValues(dealerCards);
-  let dealerCardNames = valueToName(dealerValues);
+  let playerCardNames = getCardNames(playerCards);
+  let dealerCardNames = getCardNames(dealerCards);
   let numDealerCardMinusOne = dealerCardNames.length - 1;
   
   console.clear();
@@ -167,11 +165,8 @@ function displayPlayerCards(playerCards, dealerCards) {
 }
 
 function displayAllCards(playerCards, dealerCards) {
-  let playerValues = cardValues(playerCards);
-  let playerCardNames = valueToName(playerValues);
-  
-  let dealerValues = cardValues(dealerCards);
-  let dealerCardNames = valueToName(dealerValues);
+  let playerCardNames = getCardNames(playerCards);
+  let dealerCardNames = getCardNames(dealerCards);
 
   console.clear();
   console.log(`Dealer has: ${joinCards(dealerCardNames)}.`);
@@ -237,6 +232,7 @@ while (true) {
     }
   }
 
+  // replay?
   prompt('Play again? (y or n)');
   let answer = readline.question().toLowerCase()[0];
 

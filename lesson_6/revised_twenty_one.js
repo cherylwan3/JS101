@@ -1,86 +1,43 @@
-/**
- * P--------------------
- * -Twenty-One Game
- * -Goal: get close to <= 21 without going over
- *  - > 21 => bust, lose game
- * - Deck: 52 total: 4 suits - 13 values
- *  - Hearts, Diamonds, Clubs, and Spades
- *   - 13 values (2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King, Ace).
- *  - card value:
- *    - 2 thorugh 10 -> face value
- *    - jack, queen, king = 10
- *    - Ace = 1 or 11
- * - set up:
- *    - both dealer and player initially dealt
- *      2 cards
- *    - player can see 2 cards
- *    - can see 1 of dealer cards
- * - player turn:
- *   - 2 choices:
- *    - Hit: player dealt another card
- *    - stay
- * - dealer turn:
- *  - always hit when total < 17
- *  - stay when total is >= 17
- * - comparing cards
- *  - when both player and dealer stay,
- *  - compare total value cards, who has highest value
- *
- * Implementation
-  1. Initialize deck
-  2. Deal cards to player and dealer
-    - add to player array a randomCard
-    - add to dealer array a randomCard
-  3. Player turn: hit or stay
-    - repeat until bust or stay
-  4. If player bust, dealer wins.
-  5. Dealer turn: hit or stay
-    - repeat until total >= 17
-  6. If dealer busts, player wins.
-  7. Compare cards and declare winner.
-D----------------------------------------
-nested array
-*/
-
 const readline = require('readline-sync');
 
-const DECK = [
-  ['H', 2], ['H', 3], ['H', 4], ['H', 5], ['H', 6], ['H', 7], ['H', 8], ['H', 9],
-  ['H', 10], ['H', 'J'], ['H', 'Q'], ['H', 'K'], ['H', 'A'],
-  ['D', 2], ['D', 3], ['D', 4], ['D', 5], ['D', 6], ['D', 7], ['D', 8], ['D', 9],
-  ['D', 10], ['D', 'J'], ['D', 'Q'], ['D', 'K'], ['D', 'A'],
-  ['C', 2], ['C', 3], ['C', 4], ['C', 5], ['C', 6], ['C', 7], ['C', 8], ['C', 9],
-  ['C', 10], ['C', 'J'], ['C', 'Q'], ['C', 'K'], ['C', 'A'],
-  ['S', 2], ['S', 3], ['S', 4], ['S', 5], ['S', 6], ['S', 7], ['S', 8], ['S', 9],
-  ['S', 10], ['S', 'J'], ['S', 'Q'], ['S', 'K'], ['S', 'A']
-];
+const SUITS = ['H', 'D', 'S', 'C'];
+const VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
 
 function prompt(msg) {
   console.log(`=> ${msg}`);
 }
 
-function randomCard(deck) {
-  let randomIndex = Math.floor((Math.random() * deck.length));
-  let randomCard = deck[randomIndex];
-  return randomCard;
+// shuffle an array
+function shuffle(array) {
+  for (let first = array.length - 1; first > 0; first--) {
+    let second = Math.floor(Math.random() * (first + 1)); // random index from 0 to i
+    [array[first], array[second]] = [array[second], array[first]]; // swap elements
+  }
+
+  return array;
 }
 
-function dealCard(cards, totalCards) {
-  while (true) {
-    let card = randomCard(DECK);
-    if (!totalCards.includes(card)) {
-      cards.push(card);
-      totalCards.push(card);
-      break;
+function initalizeDeck() {
+  let deck = [];
+
+  for (let suitIndex = 0; suitIndex < SUITS.length; suitIndex++) {
+    let suit = SUITS[suitIndex];
+
+    for (let valueIndex = 0; valueIndex < VALUES.length; valueIndex++) {
+      let value = VALUES[valueIndex];
+      deck.push([suit, value]);
     }
   }
+
+  return shuffle(deck);
 }
 
 function cardValues(cards) {
   return cards.map(cardArr => cardArr[1]);
 }
 
-function sumCards(cards) {
+function total(cards) {
   let values = cardValues(cards);
 
   let numOfA = 0;
@@ -91,7 +48,7 @@ function sumCards(cards) {
       numOfA += 1;
       value = 11;
     }
-    return sum + value;
+    return sum + Number(value);
   }, 0);
 
   while (sum > 21 && numOfA > 0) {
@@ -103,7 +60,7 @@ function sumCards(cards) {
 }
 
 function busted(cards) {
-  return sumCards(cards) > 21;
+  return total(cards) > 21;
 }
 
 function getCardNames(cards) {
@@ -141,7 +98,7 @@ function displayPlayerCardsTotal(playerCards, dealerCards) {
 
   console.log(`Dealer has: ${dealerCardNames[0]} and ${numDealerCardMinusOne} unknown card(s).\n`);
   console.log(`You have: ${joinCards(playerCardNames)}.`);
-  console.log(`Your total: ${sumCards(playerCards)}.\n`);
+  console.log(`Your total: ${total(playerCards)}.\n`);
 }
 
 function displayAllCardsTotal(playerCards, dealerCards) {
@@ -149,14 +106,14 @@ function displayAllCardsTotal(playerCards, dealerCards) {
   let dealerCardNames = getCardNames(dealerCards);
 
   console.log(`Dealer has: ${joinCards(dealerCardNames)}.`);
-  console.log(`Dealer total: ${sumCards(dealerCards)}.\n`);
+  console.log(`Dealer total: ${total(dealerCards)}.\n`);
   console.log(`You have: ${joinCards(playerCardNames)}.`);
-  console.log(`Your total: ${sumCards(playerCards)}.\n`);
+  console.log(`Your total: ${total(playerCards)}.\n`);
 }
 
 function displayResult(playerCards, dealerCards) {
-  let playerSum = sumCards(playerCards);
-  let dealerSum = sumCards(dealerCards);
+  let playerSum = total(playerCards);
+  let dealerSum = total(dealerCards);
 
   if (playerSum > 21) {
     logWithStars('You busted! Dealer Wins.');
@@ -187,20 +144,18 @@ function playAgain() {
   return answer === 'y';
 }
 
-//main loop
+// main loop
 while (true) {
   console.clear();
   console.log('-----------It\'s a game of Twenty-One-----------\n');
 
+  let deck = initalizeDeck();
   let playerCards = [];
   let dealerCards = [];
-  let totalCards = [...playerCards, ...dealerCards];
 
   // initial deal
-  dealCard(playerCards, totalCards);
-  dealCard(playerCards, totalCards);
-  dealCard(dealerCards, totalCards);
-  dealCard(dealerCards, totalCards);
+  playerCards.push(deck.pop(), deck.pop());
+  dealerCards.push(deck.pop(), deck.pop());
 
   // player turn
   while (true) {
@@ -215,7 +170,7 @@ while (true) {
     }
 
     if (answer === 'h') {
-      dealCard(playerCards, totalCards);
+      playerCards.push(deck.pop());
       console.log('-----------------');
       console.log('You decided to hit!\n');
     }
@@ -238,9 +193,9 @@ while (true) {
 
   // dealer turn
   console.log('Dealer turn...');
-  while (sumCards(dealerCards) < 17) {
+  while (total(dealerCards) < 17) {
     prompt('Dealer hits!\n');
-    dealCard(dealerCards, totalCards);
+    dealerCards.push(deck.pop());
   }
 
   if (busted(dealerCards)) {
@@ -258,3 +213,5 @@ while (true) {
   displayResult(playerCards, dealerCards);
   if (!playAgain()) break;
 }
+
+

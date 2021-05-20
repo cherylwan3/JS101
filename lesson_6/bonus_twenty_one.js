@@ -130,6 +130,11 @@ function detectResult(playerCards, dealerCards) {
     return 'TIE';
   }
 }
+
+function logWithStars(str) {
+  console.log(`${'*'.repeat(8)} ${str} ${'*'.repeat(8)}\n`);
+}
+
 function displayRoundWinner(playerCards, dealerCards) {
   let result = detectResult(playerCards, dealerCards);
 
@@ -172,9 +177,13 @@ function displayGrandWinner(playerCards, dealerCards) {
   }
 }
 
+let currentRound = NO_WINS;
+let numPlayerWins = NO_WINS;
+let numDealerWins = NO_WINS;
+
 function addScore(playerCards, dealerCards) {
   let result = detectResult(playerCards, dealerCards);
-  
+
   switch (result) {
     case 'PLAYER_BUSTED':
       numDealerWins += ONE_ROUND;
@@ -191,17 +200,12 @@ function addScore(playerCards, dealerCards) {
   }
 }
 
-
 function displayWinner(playerCards, dealerCards) {
   if (numPlayerWins < MAX_WINS && numDealerWins < MAX_WINS) {
-      displayRoundWinner(playerCards, dealerCards);
-    } else {
-      displayGrandWinner(playerCards, dealerCards);
-    }
-} 
-
-function logWithStars(str) {
-  console.log(`${'*'.repeat(8)} ${str} ${'*'.repeat(8)}\n`);
+    displayRoundWinner(playerCards, dealerCards);
+  } else {
+    displayGrandWinner(playerCards, dealerCards);
+  }
 }
 
 function playAgain() {
@@ -226,23 +230,18 @@ function playAgain() {
   return true;
 }
 
-
-let currentRound = NO_WINS;
-let numPlayerWins = NO_WINS;
-let numDealerWins = NO_WINS;
-
-let welcomeStr = 'Welcome to the game of Twenty-One.'
+let welcomeStr = 'Welcome to the game of Twenty-One.';
 welcomeStr = `\n${welcomeStr.padStart(welcomeStr.length + 5)}\n`;
 
 console.clear();
 console.log(welcomeStr);
 
 while (true) {
-  let roundStr = `Round: ${currentRound + ONE_ROUND}`; 
+  let roundStr = `Round: ${currentRound + ONE_ROUND}`;
   let winRateStr = `Current Win Rate - Your wins: ${numPlayerWins} Dealer Wins: ${numDealerWins}`;
   let winRateLength = winRateStr.length;
 
-  let topStr = roundStr.padStart(winRateLength / 2 + 3, '-').padEnd(winRateLength, '-');
+  let topStr = roundStr.padStart((winRateLength / 2) + 3, '-').padEnd(winRateLength, '-');
   let botStr = `${'-'.repeat(topStr.length)}\n`;
 
   console.log(topStr);
@@ -315,4 +314,4 @@ while (true) {
   addScore(playerCards, dealerCards);
   displayWinner(playerCards, dealerCards);
   if (!playAgain()) break;
-} 
+}

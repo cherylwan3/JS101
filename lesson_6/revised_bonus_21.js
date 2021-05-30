@@ -7,6 +7,14 @@ const ONE_ROUND = 1;
 const MAX_WINS = 5;
 const NO_WINS = 0;
 
+const SUITS_DISPLAY = {
+  H: '♥',
+  D: '♦',
+  S: '♠',
+  C: '♣'
+};
+
+
 function prompt(msg) {
   console.log(`=> ${msg}`);
 }
@@ -29,7 +37,10 @@ function initalizeDeck() {
 
     for (let valueIndex = 0; valueIndex < VALUES.length; valueIndex++) {
       let value = VALUES[valueIndex];
-      deck.push([suit, value]);
+      let cardObj = {};
+      cardObj.suit = suit;
+      cardObj.value = value;
+      deck.push(cardObj);
     }
   }
 
@@ -37,7 +48,7 @@ function initalizeDeck() {
 }
 
 function cardValues(cards) {
-  return cards.map(cardArr => cardArr[1]);
+  return cards.map(cardObj => cardObj.value);
 }
 
 function total(cards) {
@@ -66,20 +77,21 @@ function busted(cards) {
   return total(cards) > 21;
 }
 
-function getCardNames(cards) {
-  let values = cardValues(cards);
-  return values.map(value => {
+function getCardNames(cards) { // [['H', 'J'], ['S', 'J']
+  return cards.map(cardObj => {
+    let suit = SUITS_DISPLAY[cardObj.suit];
+    let value = cardObj.value;
     switch (value) {
       case 'J':
-        return 'Jack';
+        return `(${suit} Jack)`;
       case 'Q':
-        return 'Queen';
+        return `(${suit} Queen)`;
       case 'K':
-        return 'King';
+        return `(${suit} King)`;
       case 'A':
-        return 'Ace';
+        return `(${suit} Ace)`;
       default:
-        return value;
+        return `(${suit} ${value})`;
     }
   });
 }
@@ -97,9 +109,8 @@ function joinCards(cardNames) {
 function displayPlayerCardsTotal(playerCards, dealerCards) {
   let playerCardNames = getCardNames(playerCards);
   let dealerCardNames = getCardNames(dealerCards);
-  let numDealerCardMinusOne = dealerCardNames.length - 1;
 
-  console.log(`Dealer has: ${dealerCardNames[0]} and ${numDealerCardMinusOne} unknown card(s).\n`);
+  console.log(`Dealer has: ${dealerCardNames[0]} and (?).\n`);
   console.log(`You have: ${joinCards(playerCardNames)}.`);
   console.log(`Your total: ${total(playerCards)}.\n`);
 }
@@ -208,66 +219,22 @@ function displayWinner(playerCards, dealerCards) {
   }
 }
 
-function playAgain() {
-  currentRound += ONE_ROUND;
-
-  if (numPlayerWins === MAX_WINS || numDealerWins === MAX_WINS) {
-    currentRound = NO_WINS;
-    numPlayerWins = NO_WINS;
-    numDealerWins = NO_WINS;
-
-    prompt('Play again? (y or n)');
-    let answer = readline.question().toLowerCase()[0];
-
-    while (answer !== 'y' && answer !== 'n') {
-      prompt('please enter y or n');
-      answer = readline.question().toLowerCase()[0];
-    }
-    if (answer === 'y') console.clear();
-    return answer === 'y';
+function hitOrStay() {
+  let answer;
+  while (true) {
+    prompt('hit or stay?');
+    answer = readline.question().toLowerCase();
+    if (['h', 's'].includes(answer)) break;
+    prompt('Please enter a valid answer: h or s');
   }
-
-  return true;
+  return answer;
 }
 
-let welcomeStr = 'Welcome to the game of Twenty-One.';
-welcomeStr = `\n${welcomeStr.padStart(welcomeStr.length + 5)}\n`;
-
-console.clear();
-console.log(welcomeStr);
-
-while (true) {
-  let roundStr = `Round: ${currentRound + ONE_ROUND}`;
-  let winRateStr = `Current Win Rate - Your wins: ${numPlayerWins} Dealer Wins: ${numDealerWins}`;
-  let winRateLength = winRateStr.length;
-
-  let topStr = roundStr.padStart((winRateLength / 2) + 3, '-').padEnd(winRateLength, '-');
-  let botStr = `${'-'.repeat(topStr.length)}\n`;
-
-  console.log(topStr);
-  console.log(winRateStr);
-  console.log(botStr);
-
-  let deck = initalizeDeck();
-  let playerCards = [];
-  let dealerCards = [];
-
-  // initial deal
-  playerCards.push(deck.pop(), deck.pop());
-  dealerCards.push(deck.pop(), deck.pop());
-
-  // player turn
+function playerTurn(playerCards, dealerCards, deck) {
   while (true) {
     displayPlayerCardsTotal(playerCards, dealerCards);
 
-    let answer;
-    while (true) {
-      prompt('hit or stay?');
-      answer = readline.question().toLowerCase()[0];
-      if (['h', 's'].includes(answer)) break;
-      prompt('Please enter a valid answer.');
-    }
-
+    let answer = hitOrStay();
     if (answer === 'h') {
       playerCards.push(deck.pop());
       console.log('-----------------');
@@ -281,17 +248,14 @@ while (true) {
     displayAllCardsTotal(playerCards, dealerCards);
     addScore(playerCards, dealerCards);
     displayWinner(playerCards, dealerCards);
-    if (playAgain()) {
-      continue;
-    } else {
-      break;
-    }
+    return playAgain();
   } else {
     console.log('-----------------');
     console.log('You decided to stay.\n');
   }
+}
 
-  // dealer turn
+function dealerTurn(playerCards, dealerCards, deck) {
   console.log('Dealer turn...');
   while (total(dealerCards) < 17) {
     prompt('Dealer hits!\n');
@@ -302,11 +266,67 @@ while (true) {
     displayAllCardsTotal(playerCards, dealerCards);
     addScore(playerCards, dealerCards);
     displayWinner(playerCards, dealerCards);
-    if (playAgain()) {
-      continue;
-    } else {
-      break;
-    }
+    return playAgain();
+  }
+}
+
+function playAgain() {
+  currentRound += ONE_ROUND;
+
+  if (numPlayerWins === MAX_WINS || numDealerWins === MAX_WINS) {
+    currentRound = NO_WINS;
+    numPlayerWins = NO_WINS;
+    numDealerWins = NO_WINS;
+  }
+  prompt('Play again? (y or n)');
+  let answer = readline.question().toLowerCase();
+
+  while (!['y', 'n'].includes(answer)) {
+    prompt('please enter y or n');
+    answer = readline.question().toLowerCase();
+  }
+  if (answer === 'y') console.clear();
+  return answer === 'y';
+}
+
+let welcomeStr = 'Welcome to the game of Twenty-One.';
+welcomeStr = `\n${welcomeStr.padStart(welcomeStr.length + 5)}`;
+let numRoundStr = 'Win 5 rounds to win the game!';
+numRoundStr = `${numRoundStr.padStart(numRoundStr.length + 7)}\n`;
+
+console.clear();
+console.log(welcomeStr);
+console.log(numRoundStr);
+
+while (true) {
+  let roundStr = `Round: ${currentRound + ONE_ROUND}`;
+  let winRateStr = `Current Win Rate - Your wins: ${numPlayerWins} Dealer Wins: ${numDealerWins}`;
+  let winRateLength = winRateStr.length;
+
+  let topStr = roundStr.padStart((winRateLength / 2) + 3, '-').padEnd(winRateLength, '-');
+  let botStr = `${'-'.repeat(topStr.length)}\n`;
+
+  if (currentRound > 0) console.log(numRoundStr);
+  console.log(topStr);
+  console.log(winRateStr);
+  console.log(botStr);
+
+  let deck = initalizeDeck();
+  let playerCards = [];
+  let dealerCards = [];
+
+  // initial deal
+  playerCards.push(deck.pop(), deck.pop());
+  dealerCards.push(deck.pop(), deck.pop());
+
+  // player turn
+  if (playerTurn(playerCards, dealerCards, deck)) {
+    continue;
+  }
+
+  // dealer turn       
+  if (dealerTurn(playerCards, dealerCards, deck)) {
+    continue;
   }
 
   // comparing cards

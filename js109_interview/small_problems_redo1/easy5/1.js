@@ -41,7 +41,7 @@ function dms(angle) {
   remaining = totalMinutes % 1;
 
   let totalSeconds = MIN_PER_DEGREE * remaining;
-  seconds = Math.floor(totalSeconds);
+  let seconds = Math.floor(totalSeconds);
 
   if (String(minutes).length < 2) minutes = `0${minutes}`;
   if (String(seconds).length < 2) seconds = `0${seconds}`;

@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /**
  * P---------------------
  * input: func (str)

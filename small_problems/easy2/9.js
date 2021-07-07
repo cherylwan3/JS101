@@ -14,7 +14,7 @@
 function stringToInteger(stringOfDigits) {
   let digitsStrArray = stringOfDigits.split('');
   let numArray = digitsStrArray.map(digitInString => {
-    for (let num = 0; num < 10; num +=1 ) {
+    for (let num = 0; num < 10; num += 1) {
       if (digitInString == num) return num;
     }
   });

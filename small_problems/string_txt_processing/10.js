@@ -53,11 +53,3 @@ function searchWord2(word, text) {
   return text.replace(regex, `**${word.toUpperCase()}**`);
 }
 
-// good solution
-function searchWord3(word, text) {
-  let lowercaseText = text.toLowerCase();
-  let uppercaseWord = word.toUpperCase();
-  let newString = lowercaseText.split(word).join(`**${uppercaseWord}**`);
-
-  return newString;
-}

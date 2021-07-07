@@ -8,9 +8,6 @@
  * D/A------------------------
  */
 
-function negative(num) {
-  return String(Math.sign(num))[0] === '-' ? num : num * -1;
-}
 
 // book method
 function negative1(number) {

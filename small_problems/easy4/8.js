@@ -61,6 +61,7 @@ function wordSizes(words) {
     }
     count[wordSize] += 1;
   }
+  
   console.log(count);
   return count;
 }

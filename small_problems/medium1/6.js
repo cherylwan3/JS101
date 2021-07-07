@@ -35,7 +35,6 @@
 */
 
 
-
 function fibonacci(nth) { 
   if (nth <= 2) {
     return 1;

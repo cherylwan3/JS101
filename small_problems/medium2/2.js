@@ -41,7 +41,7 @@ console.log(triangle(0, 3, 3));        // "invalid"
 console.log(triangle(3, 1, 1));        // "invalid"
 
 function triangle(side1, side2, side3) {
-  [short, mid, long] = [...arguments].sort();  
+  let [short, mid, long] = [...arguments].sort();  
 
   if (short <= 0 || short + mid < long) {
     return 'invalid';

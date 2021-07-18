@@ -1,5 +1,5 @@
 //Non-even substrings
-
+//  https://www.codewars.com/kata/59da47fa27ee00a8b90000b4
 /**
  * P-----
  * input: string (integers)
